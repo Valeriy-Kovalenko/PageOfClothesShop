@@ -1,18 +1,21 @@
 <template>
   <div class="content">
-    <TheHeader></TheHeader>
+    <Header></Header>
     <ItemInformation></ItemInformation>
-    <footer>XxX_THERE WILL BE FOOTER_XxX</footer>
+    <ItemAnalogues></ItemAnalogues>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
-import TheHeader from "./TheHeader.vue";
+import Header from "./Header.vue";
 import ItemInformation from "./ItemInformation.vue";
+import ItemAnalogues from "./ItemAnalogues";
+import Footer from "./Footer";
 
 export default {
   name: "mainPage",
-  components: { TheHeader, ItemInformation },
+  components: {Footer, ItemInformation, ItemAnalogues, Header },
 };
 </script>
 
