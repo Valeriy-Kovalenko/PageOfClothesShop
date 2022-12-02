@@ -1,8 +1,8 @@
 <template>
     <div class="analogues">
       <div class="analogues__main-button">Посмотреть все стили</div>
-      <div class="analogues__images">
-        <img src="../assets/greyPajamas.svg" alt="grey pajamas" class="images__main"/>
+      <div class="analogues__images images">
+        <img src="../assets/greyPajamas.svg" alt="grey pajamas" class="images__main-image"/>
         <img src="../assets/beigePajamas.svg" alt="beige pajamas" />
         <img src="../assets/bear.svg" alt="bear toy" />
         <img src="../assets/greenishPajamas2.svg" alt="greenish pajamas, sitting" />
@@ -39,7 +39,7 @@ export default {
   margin-top: 2rem;
 }
 
-.images__main {
+.images__main-image {
   grid-row-start: 1;
   grid-row-end: 3;
 }

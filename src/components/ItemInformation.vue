@@ -1,29 +1,31 @@
 <template>
   <main class="main">
-    <div class="main__images">
-      <img :src="currentImage" class="main__images__full" />
-      <ul class="main__images__list">
+    <TheDialog
+      v-if="showModal"
+      :item="currentItem"
+      :amount="amountOfItems"
+      :destination="destinationOfItem"
+    ></TheDialog>
+    <div class="main__images images">
+      <img :src="currentImage" class="images__main-image" />
+      <ul class="images__list list">
         <li
           v-for="image in images"
           :key="image.source"
           class="list__item"
           :class="{ 'list__item--active': image.picked }"
         >
-          <img
-            :src="image.source"
-            :alt="image.alternate"
-            @click="changeImage(image.source)"
-          />
+          <img :src="image.source" :alt="image.alternate" @click="changeImage(image.source)" />
         </li>
       </ul>
     </div>
-    <div class="main__information">
-      <div class="main__information__body">
-        <div class="main__information__description description">
-          <p class="description__title">Пижама для девочек</p>
-          <p class="description__article">Арт. 02765/46</p>
+    <div class="main__information information">
+      <div class="information__content content">
+        <div class="content__description description">
+          <h3 class="description__title">Пижама для девочек</h3>
+          <div class="description__article">Арт. 02765/46</div>
         </div>
-        <div class="main__information__reviews">
+        <div class="content__reviews">
           <p>Отзывы</p>
           <img src="../assets/fiveStars.svg" />
           <p>14 отзывов</p>
@@ -31,56 +33,41 @@
             <img src="../assets/arrow.svg" />
           </router-link>
         </div>
-        <div class="main__information__price">
-          <p class="price__new">800 ₽</p>
-          <p class="price__old">1500 ₽</p>
+        <div class="content__price price">
+          <span class="price--new">800 ₽</span>
+          <span class="price--old">1500 ₽</span>
           <router-link to="null">
             <img src="../assets/arrow.svg" />
           </router-link>
         </div>
-        <div class="main__information__sales">
-          <div class="price__sale">
-            <p>скидка -36%</p>
-          </div>
-          <div class="prise__promotion">
-            <p>акция -20%</p>
-          </div>
+        <div class="content__sales sales">
+          <span class="sales__item">скидка -36%</span>
+          <span class="sales__item">акция -20%</span>
         </div>
-        <div class="main__information__size">
+        <div class="content__size size">
           <select class="size__menu">
-            <option value="chose">Выберите размер</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
+            <option value="" hidden>Выберите размер</option>
+            <option v-for="size in sizes" :key="size" :value="size">{{ size }}</option>
           </select>
           <p class="size__information">Определить размер</p>
         </div>
-        <div class="main__information__adding">
-          <div class="adding__amount">
-            <p @click="addItem">+</p>
-            <p class="adding__counter">{{ amountOfItems }}</p>
-            <p @click="removeItem">–</p>
+        <div class="content__actions actions">
+          <div class="actions__amount">
+            <span @click="addItem">+</span>
+            <span class="actions__counter">{{ amountOfItems }}</span>
+            <span @click="removeItem">–</span>
           </div>
-          <button class="adding__button">Добавить в корзину</button>
-          <button class="adding__favourite">
+          <button class="actions__add-to-cart" @click="addItemTo('корзину')">Добавить в корзину</button>
+          <button class="actions__add-to-favourite" @click="addItemTo('избранное')">
             <img src="../assets/whiteHeart.svg" alt="add to favourite!" />
           </button>
         </div>
-        <p class="main__information__buy">Купить в один клик</p>
+        <p class="content__buy">Купить в один клик</p>
       </div>
-      <div class="main__information__additional">
-        <div>
-          <img src="../assets/shirt.svg" />
-          <p>Описание товара</p>
-        </div>
-        <div>
-          <img src="../assets/clock.svg" />
-          <p>Доставка и возврат</p>
-        </div>
-        <div>
-          <img src="../assets/creditCard.svg" />
-          <p>Способ оплаты</p>
+      <div class="information__extra">
+        <div v-for="(item, idx) in extraInformation" :key="idx">
+          <img :src="item.source" />
+          <span>{{ item.label }}</span>
         </div>
       </div>
     </div>
@@ -88,266 +75,320 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      amountOfItems: 1,
-      currentImage: require("../assets/yellowPajamas.svg"),
-      images: [
-        {
-          source: require("../assets/yellowPajamas.svg"),
-          alternate: "yellow pajamas",
-          picked: true,
-        },
-        {
-          source: require("../assets/pinkPajamasOnGirlFrontView.svg"),
-          alternate: "pink pajamas on girl front view",
-          picked: false,
-        },
-        {
-          source: require("../assets/pinkPajamasOnGirlBackView.svg"),
-          alternate: "pink pajamas on girl back view",
-          picked: false,
-        },
-        {
-          source: require("../assets/pinkPajamasFrontView.svg"),
-          alternate: "pink pajamas front view",
-          picked: false,
-        },
-        {
-          source: require("../assets/pinkPajamasBackView.svg"),
-          alternate: "pink pajamas back view",
-          picked: false,
-        },
-      ],
-    };
-  },
-  methods: {
-    changeImage(source) {
-      this.images.find((img) => img.source === this.currentImage).picked = false;
-      this.currentImage = source;
-      this.images.find((img) => img.source === source).picked = true;
+  import TheDialog from './TheDialog.vue';
+
+  export default {
+    components: { TheDialog },
+    data() {
+      return {
+        currentItem: 'Пижама для девочек',
+        amountOfItems: 1,
+        destinationOfItem: '',
+        sizes: ['S', 'M', 'L', 'XL'],
+        extraInformation: [
+          { source: require('../assets/shirt.svg'), label: 'Описание товара' },
+          { source: require('../assets/clock.svg'), label: 'Доставка и возврат' },
+          { source: require('../assets/creditCard.svg'), label: 'Способ оплаты' },
+        ],
+        currentImage: require('../assets/yellowPajamas.svg'),
+        showModal: false,
+        images: [
+          {
+            source: require('../assets/yellowPajamas.svg'),
+            alternate: 'yellow pajamas',
+            picked: true,
+          },
+          {
+            source: require('../assets/pinkPajamasOnGirlFrontView.svg'),
+            alternate: 'pink pajamas on girl front view',
+            picked: false,
+          },
+          {
+            source: require('../assets/pinkPajamasOnGirlBackView.svg'),
+            alternate: 'pink pajamas on girl back view',
+            picked: false,
+          },
+          {
+            source: require('../assets/pinkPajamasFrontView.svg'),
+            alternate: 'pink pajamas front view',
+            picked: false,
+          },
+          {
+            source: require('../assets/pinkPajamasBackView.svg'),
+            alternate: 'pink pajamas back view',
+            picked: false,
+          },
+        ],
+      };
     },
-    addItem() {
-      this.amountOfItems++;
+    methods: {
+      changeImage(source) {
+        this.images.find(img => img.source === this.currentImage).picked = false;
+        this.currentImage = source;
+        this.images.find(img => img.source === source).picked = true;
+      },
+      addItem() {
+        this.amountOfItems++;
+      },
+      removeItem() {
+        this.amountOfItems > 0 ? this.amountOfItems-- : (this.amountOfItems = 0);
+      },
+      addItemTo(destination) {
+        this.destinationOfItem = destination;
+        this.showModal = true;
+        setTimeout(() => (this.showModal = false), 3000);
+      },
     },
-    removeItem() {
-      this.amountOfItems > 0 ? this.amountOfItems-- : (this.amountOfItems = 0);
-    },
-  },
-};
+  };
 </script>
 
 <style scoped>
-.main {
-  padding: 1.5rem 0;
-  display: flex;
-}
+  .main {
+    padding: 1.5rem 0;
+    display: flex;
+    width: 100%;
+  }
 
-.main__images {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
+  .main__images {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 
-.main__images__full {
-  height: 878px;
-}
+  .images__main-image {
+    height: 878px;
+  }
 
-.main__images__list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  padding: 0;
-  margin: 1.2rem 1.2rem 0 1.2rem;
-}
+  .images__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    padding: 0;
+    margin: 1.2rem 1.2rem 0 1.2rem;
+  }
 
-.list__item {
-  list-style-type: none;
-  margin: 0.2rem 0;
-  opacity: 0.7;
-}
+  .list__item {
+    list-style-type: none;
+    margin: 0.2rem 0;
+    opacity: 0.7;
+  }
 
-.list__item--active {
-  opacity: 1;
-}
 
-.list__item img {
-  width: 70px;
-  height: 91px;
-  vertical-align: middle;
-}
 
-.main__information {
-  margin-left: 16px;
-  padding: 24px 0 24px 20px;
-  border-bottom: 0.5px solid #c4c4c4;
-}
+  .list__item--active {
+    opacity: 1;
+  }
 
-.main__information__body {
-  padding-bottom: 1.8rem;
-  border-bottom: 0.5px solid #c4c4c4;
-}
+  .list__item img {
+    width: 70px;
+    height: 91px;
+    vertical-align: middle;
+  }
 
-.description__title {
-  font-family: "Open Sans", sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 0;
-  margin-bottom: 8px;
-}
+  .main__information {
+    margin-left: 16px;
+    padding: 24px 0 24px 20px;
+    flex-grow: 2;
+  }
 
-.description__article {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  color: #828282;
-  margin: 0;
-}
+  .information__content {
+    padding-bottom: 1.8rem;
+    border-bottom: 0.5px solid #c4c4c4;
+  }
 
-.main__information__reviews {
-  margin-top: 1.1rem;
-  display: flex;
-}
+  .description__title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
 
-.main__information__reviews p {
-  margin: 0;
-}
+  .description__article {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: #828282;
+    margin: 0;
+  }
 
-.main__information img {
-  height: 0.9rem;
-  margin: 0 0.2rem 0 0.8rem;
-}
+  .content__reviews {
+    margin-top: 1.1rem;
+    display: flex;
+  }
 
-.main__information__price {
-  display: flex;
-  align-items: center;
-  margin-top: 2.8rem;
-  margin-bottom: 0.8rem;
-}
+  .content__reviews p {
+    margin: 0;
+  }
 
-.price__new {
-  font-family: "Open Sans", sans-serif;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  margin: 0 0.8rem 0 0;
-}
+  .content__price img:hover,
+  .content__reviews img:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 0 4px 4px rgb(215, 211, 211);
+  }
 
-.price__old {
-  font-family: "Open Sans", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  text-decoration: line-through;
-  color: #828282;
-  margin: 0;
-}
+  .main__information img {
+    height: 0.9rem;
+    margin: 0 0.2rem 0 0.8rem;
+  }
 
-.main__information__sales {
-  display: flex;
-  font-family: "Open Sans", sans-serif;
-  font-size: 12px;
-  margin-bottom: 2.1rem;
-}
+  .content__price {
+    display: flex;
+    align-items: center;
+    margin-top: 2.8rem;
+    margin-bottom: 0.8rem;
+  }
 
-.main__information__sales p {
-  border: 1px #333333 solid;
-  padding: 0.3rem 0.5rem;
-  margin: 0 0.6rem 0 0;
-}
-.main__information__size {
-  margin-bottom: 2.5rem;
-}
+  .price--new {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0 0.8rem 0 0;
+  }
 
-.size__menu {
-  width: 315px;
-  height: 44px;
-  padding: 0.7rem 0.8rem 0.7rem 1rem;
-}
+  .price--old {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    text-decoration: line-through;
+    color: #828282;
+    margin: 0;
+  }
 
-.size__information,
-.main__information__buy {
-  font-family: "Open Sans", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  text-decoration: underline;
-  color: #333333;
-  margin: 0.8rem 0 0 0;
-}
+  .content__sales {
+    display: flex;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    margin-bottom: 2.1rem;
+  }
 
-.main__information__adding {
-  display: flex;
-}
+  .content__sales span {
+    border: 1px #333333 solid;
+    padding: 0.3rem 0.5rem;
+    margin: 0 0.6rem 0 0;
+  }
 
-.adding__amount {
-  display: flex;
-  width: 145px;
-  height: 44px;
-  padding: 0.8rem 1.2rem;
-  background-color: #f2f2f2;
-}
+  .content__size {
+    margin-bottom: 2.5rem;
+  }
 
-.adding__amount .adding__counter {
-  margin: 0 1rem;
-  width: 4rem;
-  text-align: center;
-}
+  .size__menu {
+    width: 315px;
+    height: 44px;
+    padding: 0.7rem 0.8rem 0.7rem 1rem;
+  }
 
-.adding__amount p {
-  margin: 0;
-}
+  .size__information,
+  .content__buy {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    text-decoration: underline;
+    color: #333333;
+    margin: 0.8rem 0 0 0;
+    cursor: pointer;
+  }
 
-.adding__button {
-  width: 203px;
-  height: 44px;
-  border: 1px solid #333333;
-  background-color: #333333;
-  color: white;
-  padding: 0.8rem 1.7rem;
-  margin: 0 0.2rem 0 0.8rem;
-}
+  .content__actions {
+    display: flex;
+  }
 
-.adding__favourite {
-  width: 44px;
-  background-color: #333333;
-  position: relative;
-  padding: 0;
-  border: 1px solid #333333;
-}
+  .actions__amount {
+    display: flex;
+    width: 145px;
+    height: 44px;
+    padding: 0.8rem 1.2rem;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    user-select: none;
+  }
 
-.adding__favourite img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-}
+  .actions__amount .actions__counter {
+    margin: 0 1rem;
+    width: 4rem;
+    text-align: center;
+  }
 
-.main__information__additional {
-  padding-top: 1.7rem;
-}
+  .actions__amount span {
+    margin: 0;
+  }
 
-.main__information__additional div {
-  display: flex;
-  align-items: center;
-}
+  .actions__add-to-cart {
+    width: 203px;
+    height: 44px;
+    border: 1px solid #333333;
+    background-color: #333333;
+    color: white;
+    padding: 0.8rem 1.7rem;
+    margin: 0 0.2rem 0 0.8rem;
+  }
 
-.main__information__additional p {
-  font-family: "Open Sans", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  text-decoration: underline;
-  color: #333333;
-  margin: 0;
-}
+  .actions__add-to-cart:hover,
+  .actions__add-to-favourite:hover {
+    box-shadow: 1px 1px 2px 2px rgb(215, 211, 211);
+    cursor: pointer;
+    background-color: white;
+    color: #333333;
+    transition: background-color 0.5s ease-out;
+  }
 
-.main__information__additional div img {
-  height: 1.1rem;
-  margin: 0 0.4rem 0 0;
-}
+  .actions__add-to-cart:active,
+  .actions__add-to-favourite:active {
+    background-color: #333333;
+    color: white;
+  }
+
+  .actions__add-to-favourite {
+    width: 44px;
+    background-color: #333333;
+    position: relative;
+    padding: 0;
+    border: 1px solid #333333;
+  }
+
+  .actions__add-to-favourite img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+  }
+
+  .information__extra {
+    padding-top: 1.7rem;
+  }
+
+  .information__extra div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    width: 100%;
+  }
+
+  .information__extra span {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    text-decoration: underline;
+    color: #333333;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .size__information:hover,
+  .content__buy:hover,
+  .information__extra span:hover {
+    text-decoration: none;
+  }
+
+  .information__extra div img {
+    height: 1.1rem;
+    margin: 0 0.5rem 0 0;
+  }
 </style>
