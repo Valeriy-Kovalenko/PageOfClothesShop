@@ -15,9 +15,16 @@
     <div class="footer__subscription subscription">
       <p class="subscription__header">Узнайте первыми о новинках и акциях</p>
       <form class="subscription__input">
-        <input type="email" placeholder="Адрес электронной почты" v-model="inputValue" :class="{ invalid: !isValid }" />
+        <input
+          @keypress.enter.prevent="subscribe"
+          @input="changeValidStatus"
+          type="email"
+          placeholder="Адрес электронной почты"
+          v-model="inputValue"
+          :class="{ invalid: !isValid }"
+        />
         <img src="../assets/close-icon.svg" alt="close" @click="clearInput" />
-        <span v-if="!isValid">Пожалуйста, введите корректный адрес</span>
+        <span v-if="!isValid">Пожалуйста, введите корректный адрес: example@test.com</span>
         <button @click.prevent="subscribe">Подписаться</button>
       </form>
     </div>
@@ -35,20 +42,22 @@
     },
     methods: {
       subscribe() {
-        const partAfterAt = this.inputValue.split('@')[1];
-        const AreThereLettersAfterDot = partAfterAt.split('.')[1];
-        const inputIsValid =
-          this.inputValue.includes('@') && partAfterAt.includes('.') && AreThereLettersAfterDot.length > 1;
-        if (!inputIsValid) {
-          this.isValid = false;
-          setTimeout(() => (this.isValid = true), 2000);
-        } else {
-          this.clearInput();
+        const valueAfterAt = this.inputValue.split('@')[1];
+        const hasDotAtDomain = () => valueAfterAt.length > 1 && valueAfterAt.includes('.');
+        const isValidDomainAfterDot = () => valueAfterAt.split('.')[1].length > 1;
+
+        if (valueAfterAt && hasDotAtDomain() && isValidDomainAfterDot()) {
+            return this.clearInput();
         }
+
+        this.isValid = false;
       },
       clearInput() {
         this.inputValue = '';
       },
+      changeValidStatus() {
+        this.isValid = true;
+      }
     },
   };
 </script>
@@ -80,7 +89,12 @@
     text-transform: uppercase;
     line-height: 24px;
     margin: 0 0 1rem 0;
-    cursor: auto;
+    cursor: default;
+  }
+
+  .invalid {
+    color: red;
+    border: 2px solid red;
   }
 
   .subscription__input {
@@ -98,13 +112,7 @@
     border-bottom: 1px solid #c4c4c4;
   }
 
-  .invalid {
-    color: red;
-    border: 2px solid red;
-  }
-
   .subscription__input input:focus-visible {
-    color: #333333;
     outline: none;
   }
 

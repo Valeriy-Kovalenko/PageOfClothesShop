@@ -25,18 +25,18 @@
           <h3 class="description__title">Пижама для девочек</h3>
           <div class="description__article">Арт. 02765/46</div>
         </div>
-        <div class="content__reviews">
+        <div class="content__reviews reviews">
           <p>Отзывы</p>
-          <img src="../assets/fiveStars.svg" />
+          <img src="../assets/fiveStars.svg" class="reviews__stars"/>
           <p>14 отзывов</p>
-          <router-link to="null">
+          <router-link to="/">
             <img src="../assets/arrow.svg" />
           </router-link>
         </div>
         <div class="content__price price">
           <span class="price--new">800 ₽</span>
           <span class="price--old">1500 ₽</span>
-          <router-link to="null">
+          <router-link to="/">
             <img src="../assets/arrow.svg" />
           </router-link>
         </div>
@@ -49,7 +49,7 @@
             <option value="" hidden>Выберите размер</option>
             <option v-for="size in sizes" :key="size" :value="size">{{ size }}</option>
           </select>
-          <p class="size__information">Определить размер</p>
+          <span class="size__information">Определить размер</span>
         </div>
         <div class="content__actions actions">
           <div class="actions__amount">
@@ -62,7 +62,7 @@
             <img src="../assets/whiteHeart.svg" alt="add to favourite!" />
           </button>
         </div>
-        <p class="content__buy">Купить в один клик</p>
+        <span class="content__buy">Купить в один клик</span>
       </div>
       <div class="information__extra">
         <div v-for="(item, idx) in extraInformation" :key="idx">
@@ -175,52 +175,59 @@
     opacity: 0.7;
   }
 
-
-
   .list__item--active {
     opacity: 1;
   }
 
   .list__item img {
-    width: 70px;
-    height: 91px;
+    width: 4.4rem;
+    height: 5.7rem;
     vertical-align: middle;
   }
 
   .main__information {
-    margin-left: 16px;
-    padding: 24px 0 24px 20px;
+    margin-left: 1rem;
+    padding: 1.5rem 0 1.5rem 0;
     flex-grow: 2;
+    font-family: 'Open Sans', sans-serif;
   }
 
   .information__content {
+    padding-left: 1.25rem;
     padding-bottom: 1.8rem;
     border-bottom: 0.5px solid #c4c4c4;
+    display: flex;
+    flex-direction: column;
   }
 
   .description__title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: 600;
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: .5rem;
   }
 
   .description__article {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #828282;
-    margin: 0;
   }
 
   .content__reviews {
     margin-top: 1.1rem;
     display: flex;
+    align-items: center;
   }
 
   .content__reviews p {
     margin: 0;
+  }
+
+  .reviews__stars {
+    margin: 0 0.2rem 0 0.8rem;
+  }
+
+  .content__reviews a img {
+    margin-left: 0.5rem;
   }
 
   .content__price img:hover,
@@ -231,66 +238,62 @@
 
   .main__information img {
     height: 0.9rem;
-    margin: 0 0.2rem 0 0.8rem;
   }
 
   .content__price {
     display: flex;
     align-items: center;
-    margin-top: 2.8rem;
-    margin-bottom: 0.8rem;
+    margin: 2.8rem 0 0.8rem 0;
+  }
+
+  .content__price img {
+    margin-left: 1.25rem;
   }
 
   .price--new {
-    font-family: 'Open Sans', sans-serif;
-    font-style: normal;
     font-weight: 700;
-    font-size: 24px;
-    margin: 0 0.8rem 0 0;
+    font-size: 1.5rem;
+    margin-right: 0.8rem;
   }
 
   .price--old {
-    font-family: 'Open Sans', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
+    font-size: 0.9rem;
     text-decoration: line-through;
     color: #828282;
-    margin: 0;
   }
 
   .content__sales {
     display: flex;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 12px;
+    font-size: 0.75rem;
     margin-bottom: 2.1rem;
   }
 
   .content__sales span {
     border: 1px #333333 solid;
     padding: 0.3rem 0.5rem;
-    margin: 0 0.6rem 0 0;
+    margin-right: 0.6rem;
   }
 
   .content__size {
     margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
   }
 
   .size__menu {
-    width: 315px;
-    height: 44px;
-    padding: 0.7rem 0.8rem 0.7rem 1rem;
+    width: 19.7rem;
+    height: 2.75rem;
+    padding: .7rem .8rem .7rem 1rem;
+    background-color: white;
+    border: 1px solid #333333;
   }
 
   .size__information,
   .content__buy {
-    font-family: 'Open Sans', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
+    font-size: .9rem;
     text-decoration: underline;
     color: #333333;
-    margin: 0.8rem 0 0 0;
+    margin-top: .8rem;
     cursor: pointer;
   }
 
@@ -300,12 +303,14 @@
 
   .actions__amount {
     display: flex;
-    width: 145px;
-    height: 44px;
-    padding: 0.8rem 1.2rem;
+    align-items: center;
+    width: 9rem;
+    height: 2.75rem;
+    padding: .8rem 1.2rem;
     background-color: #f2f2f2;
     cursor: pointer;
     user-select: none;
+    font-size: .9rem;
   }
 
   .actions__amount .actions__counter {
@@ -314,18 +319,16 @@
     text-align: center;
   }
 
-  .actions__amount span {
-    margin: 0;
-  }
-
   .actions__add-to-cart {
-    width: 203px;
-    height: 44px;
+    width: 12.7rem;
+    height: 2.75rem;
     border: 1px solid #333333;
     background-color: #333333;
     color: white;
-    padding: 0.8rem 1.7rem;
-    margin: 0 0.2rem 0 0.8rem;
+    padding: .8rem 1.7rem;
+    margin: 0 .2rem 0 .8rem;
+    font-family: inherit;
+    font-size: 0.9rem;
   }
 
   .actions__add-to-cart:hover,
@@ -334,7 +337,7 @@
     cursor: pointer;
     background-color: white;
     color: #333333;
-    transition: background-color 0.5s ease-out;
+    transition: background-color .5s ease-out;
   }
 
   .actions__add-to-cart:active,
@@ -344,10 +347,9 @@
   }
 
   .actions__add-to-favourite {
-    width: 44px;
+    width: 2.75rem;
     background-color: #333333;
     position: relative;
-    padding: 0;
     border: 1px solid #333333;
   }
 
@@ -361,6 +363,7 @@
 
   .information__extra {
     padding-top: 1.7rem;
+    padding-left: 1.25rem;
   }
 
   .information__extra div {
@@ -371,13 +374,9 @@
   }
 
   .information__extra span {
-    font-family: 'Open Sans', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
+    font-size: 0.9rem;
     text-decoration: underline;
     color: #333333;
-    margin: 0;
     cursor: pointer;
   }
 
