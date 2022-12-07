@@ -4,7 +4,7 @@ import MainPage from './components/MainPage.vue';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: MainPage }  // change the way
+        { path: '/', component: MainPage }
     ]
 });
 

@@ -71,8 +71,6 @@
     justify-content: space-around;
     color: #333333;
     font-family: 'Open Sans', sans-serif;
-    font-style: normal;
-    font-weight: 400;
   }
 
   .footer p {
@@ -135,7 +133,7 @@
   .subscription__input button:hover {
     background-color: #333333;
     color: white;
-    transition: background-color 0.5s ease-out;
+    transition: all 0.5s ease-out;
   }
 
   .subscription__input button:active {
@@ -146,5 +144,22 @@
   .subscription__input span {
     align-self: center;
     font-size: 0.6rem;
+  }
+
+  @media (max-width: 28rem) {
+    .footer {
+      flex-wrap: wrap;
+      justify-content: start;
+      padding: 1.1rem;
+      margin-top: 1.8rem;
+    }
+
+    .footer__information {
+      margin-right: 3rem;
+    }
+
+    .footer__subscription {
+      margin-top: 3.6rem;
+    }
   }
 </style>

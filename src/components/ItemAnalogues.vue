@@ -2,26 +2,27 @@
   <div class="analogues">
     <div class="analogues__main-button">Посмотреть все стили</div>
     <div class="analogues__images images">
-      <div id="qwe" class="images__main-image main-image" @mouseenter="changeHoverStatus($event)" @mouseleave="changeHoverStatus">
-        <img src="../assets/greyPajamas.svg" alt="grey pajamas" />
-        <Teleport :to="hoverTarget">
-          <div class="main-image__active active" v-if="isHovered">
-            <img src="../assets/list.svg" alt="все фото" class="active__list" />
-            <div class="active__buy">
-              <img src="../assets/bag.svg" alt="купить"/>
-              <span>Узнай, что на мне</span>
-            </div>
-            <div class="active__likes">
-              <img src="../assets/fullWhiteHeart.svg" alt="" />
-              <span>{{ 200 }}</span>
-            </div>
+      <div
+        v-for="image in images"
+        :key="image.alternate"
+        class="images__item"
+        :class="{ images__main: image.isMain }"
+        @mouseenter="changeHoverStatus($event)"
+        @mouseleave="changeHoverStatus($event)"
+      >
+        <img :src="image.source" :alt="image.alternate" />
+        <div class="active">
+          <img src="../assets/list.svg" alt="все фото" class="active__list" />
+          <div class="active__buy">
+            <img src="../assets/bag.svg" alt="купить" />
+            <span>Узнай, что на мне</span>
           </div>
-        </Teleport>
+          <div class="active__likes">
+            <img src="../assets/fullWhiteHeart.svg" alt="" />
+            <span>{{ image.likes }}</span>
+          </div>
+        </div>
       </div>
-      <img src="../assets/beigePajamas.svg" alt="beige pajamas" />
-      <img src="../assets/bear.svg" alt="bear toy" />
-      <img src="../assets/greenishPajamas2.svg" alt="greenish pajamas, sitting" />
-      <img src="../assets/greenishPajamas.svg" alt="greenish pajamas, standing" />
     </div>
   </div>
 </template>
@@ -31,18 +32,22 @@
     name: 'ItemAnalogues',
     data() {
       return {
-        isHovered: false,
-        hoverTarget: "body",
+        images: [
+          { source: require('../assets/greyPajamas.webp'), alternate: 'grey pajamas', likes: 200, isMain: true },
+          { source: require('../assets/beigePajamas.webp'), alternate: 'beige pajamas', likes: 57 },
+          { source: require('../assets/bear.webp'), alternate: 'bear toy', likes: 432 },
+          { source: require('../assets/greenishPajamas2.webp'), alternate: 'greenish pajamas, sitting', likes: 119 },
+          { source: require('../assets/greenishPajamas.webp'), alternate: 'greenish pajamas, standing', likes: 135 },
+        ],
       };
     },
     methods: {
       changeHoverStatus(event) {
-        this.isHovered = !this.isHovered;
-        this.hoverTarget = "body"
-        console.log(event)
-        // this.hoverTarget = "div" + " ." + event.target.classList[1];
-        console.log(this.hoverTarget);
-        console.log(this.isHovered);
+        const hoverDivStyle = event.target.childNodes[1].style;
+        const displayStatus = hoverDivStyle.display;
+        displayStatus === 'none' || displayStatus === ''
+          ? (hoverDivStyle.display = 'flex')
+          : (hoverDivStyle.display = 'none');
       },
     },
   };
@@ -75,8 +80,17 @@
     margin-top: 2rem;
   }
 
+  .images__item {
+    position: relative;
+  }
+
+  .images__main {
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+
   .active {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
@@ -95,6 +109,10 @@
     font-size: 0.9rem;
     color: white;
     letter-spacing: 0.04em;
+  }
+
+  .active img {
+    cursor: pointer;
   }
 
   .active__list {
@@ -123,9 +141,27 @@
     margin-right: 0.4rem;
   }
 
-  .images__main-image {
-    grid-row-start: 1;
-    grid-row-end: 3;
-    position: relative;
+  @media (max-width: 28rem) {
+    .analogues {
+      width: 100%;
+    }
+
+    .analogues__images {
+      grid-template-columns: auto auto;
+      grid-template-rows: auto auto auto;
+      grid-gap: .5rem;
+    }
+
+    .images__main {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      width: 100%;
+    }
+
+    .analogues__images img {
+      width: 100%;
+      vertical-align: top;
+      /*display: block;  second option*/
+    }
   }
 </style>

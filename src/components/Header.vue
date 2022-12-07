@@ -4,13 +4,13 @@
       <span>LOGO</span>
     </router-link>
     <div class="nav__items">
-      <router-link to="null" class="nav__item">
+      <router-link to="/" class="nav__item">
         <img src="../assets/user.svg" alt="user-profile" />
       </router-link>
-      <router-link to="null" class="nav__item">
+      <router-link to="/" class="nav__item">
         <img src="../assets/heart.svg" alt="user-profile" />
       </router-link>
-      <router-link to="null" class="nav__item">
+      <router-link to="/" class="nav__item">
         <img src="../assets/bag.webp" alt="user-profile" />
       </router-link>
     </div>
@@ -26,11 +26,14 @@
 <style scoped>
   .nav {
     width: 100%;
+    max-width: 1390px;
     height: 2.6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid lightgrey;
+    background-color: white;
+    z-index: 2;
   }
 
   .nav__logo {

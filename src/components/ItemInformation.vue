@@ -57,10 +57,12 @@
             <span class="actions__counter">{{ amountOfItems }}</span>
             <span @click="removeItem">–</span>
           </div>
-          <button class="actions__add-to-cart" @click="addItemTo('корзину')">Добавить в корзину</button>
-          <button class="actions__add-to-favourite" @click="addItemTo('избранное')">
-            <img src="../assets/whiteHeart.svg" alt="add to favourite!" />
-          </button>
+          <div class="actions__buttons buttons"> <!-- добавил див и поплыл БЕМ, надо переписать -->
+            <button class="buttons__add-to-cart" @click="addItemTo('корзину')">Добавить в корзину</button>
+            <button class="buttons__add-to-favourite" @click="addItemTo('избранное')">
+              <img src="../assets/whiteHeart.svg" alt="add to favourite!" />
+            </button>
+          </div>
         </div>
         <span class="content__buy">Купить в один клик</span>
       </div>
@@ -173,6 +175,7 @@
     list-style-type: none;
     margin: 0.2rem 0;
     opacity: 0.7;
+    cursor: pointer;
   }
 
   .list__item--active {
@@ -319,7 +322,11 @@
     text-align: center;
   }
 
-  .actions__add-to-cart {
+  .actions__buttons {
+    display: flex;
+  }
+
+  .buttons__add-to-cart {
     width: 12.7rem;
     height: 2.75rem;
     border: 1px solid #333333;
@@ -329,31 +336,34 @@
     margin: 0 .2rem 0 .8rem;
     font-family: inherit;
     font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .actions__add-to-cart:hover,
-  .actions__add-to-favourite:hover {
+  .buttons__add-to-cart:hover,
+  .buttons__add-to-favourite:hover {
     box-shadow: 1px 1px 2px 2px rgb(215, 211, 211);
     cursor: pointer;
     background-color: white;
     color: #333333;
-    transition: background-color .5s ease-out;
+    transition: all .5s ease-out;
   }
 
-  .actions__add-to-cart:active,
-  .actions__add-to-favourite:active {
+  .buttons__add-to-cart:active,
+  .buttons__add-to-favourite:active {
     background-color: #333333;
     color: white;
   }
 
-  .actions__add-to-favourite {
+  .buttons__add-to-favourite {
     width: 2.75rem;
     background-color: #333333;
     position: relative;
     border: 1px solid #333333;
   }
 
-  .actions__add-to-favourite img {
+  .buttons__add-to-favourite img {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -389,5 +399,29 @@
   .information__extra div img {
     height: 1.1rem;
     margin: 0 0.5rem 0 0;
+  }
+
+  @media (max-width: 28rem) {
+
+    .main {
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .images__main-image {
+      height: auto;
+    }
+
+    .content__actions {
+      flex-direction: column;
+    }
+
+    .actions__buttons {
+      margin-top: 1rem;
+    }
+
+    .buttons__add-to-cart {
+      margin: 0 .2rem 0 0;
+    }
   }
 </style>
