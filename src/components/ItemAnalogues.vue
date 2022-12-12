@@ -14,7 +14,7 @@
         <div class="active">
           <img src="../assets/list.svg" alt="все фото" class="active__list" />
           <div class="active__buy">
-            <img src="../assets/bag.svg" alt="купить" />
+            <img src="../assets/whiteBag.svg" alt="купить" />
             <span>Узнай, что на мне</span>
           </div>
           <div class="active__likes">
@@ -30,17 +30,23 @@
 <script>
   export default {
     name: 'ItemAnalogues',
-    data() {
-      return {
-        images: [
-          { source: require('../assets/greyPajamas.webp'), alternate: 'grey pajamas', likes: 200, isMain: true },
-          { source: require('../assets/beigePajamas.webp'), alternate: 'beige pajamas', likes: 57 },
-          { source: require('../assets/bear.webp'), alternate: 'bear toy', likes: 432 },
-          { source: require('../assets/greenishPajamas2.webp'), alternate: 'greenish pajamas, sitting', likes: 119 },
-          { source: require('../assets/greenishPajamas.webp'), alternate: 'greenish pajamas, standing', likes: 135 },
-        ],
-      };
-    },
+    data: () => ({
+      images: [
+        { source: 'https://i.ibb.co/pLB0P5Z/grey-Pajamas.webp', alternate: 'grey pajamas', likes: 200, isMain: true },
+        { source: 'https://i.ibb.co/WxmRr2p/beige-Pajamas.webp', alternate: 'beige pajamas', likes: 57 },
+        { source: 'https://i.ibb.co/mB6bWYm/bear.webp', alternate: 'bear toy', likes: 432 },
+        {
+          source: 'https://i.ibb.co/xJx4H75/greenish-Pajamas2.webp',
+          alternate: 'greenish pajamas, sitting',
+          likes: 119,
+        },
+        {
+          source: 'https://i.ibb.co/Gv5Mf4d/greenish-Pajamas.webp',
+          alternate: 'greenish pajamas, standing',
+          likes: 135,
+        },
+      ],
+    }),
     methods: {
       changeHoverStatus(event) {
         const hoverDivStyle = event.target.childNodes[1].style;
@@ -57,6 +63,7 @@
   .analogues {
     margin-top: 2rem;
   }
+
   .analogues__main-button {
     font-family: 'Open Sans', sans-serif;
     font-style: normal;
@@ -149,7 +156,7 @@
     .analogues__images {
       grid-template-columns: auto auto;
       grid-template-rows: auto auto auto;
-      grid-gap: .5rem;
+      grid-gap: 0.5rem;
     }
 
     .images__main {
@@ -161,7 +168,10 @@
     .analogues__images img {
       width: 100%;
       vertical-align: top;
-      /*display: block;  second option*/
+    }
+
+    .analogues__images .active__list {
+      width: auto;
     }
   }
 </style>

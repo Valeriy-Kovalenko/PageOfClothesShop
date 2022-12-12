@@ -34,12 +34,10 @@
 <script>
   export default {
     name: 'TheFooter',
-    data() {
-      return {
-        isValid: true,
-        inputValue: '',
-      };
-    },
+    data: () => ({
+      isValid: true,
+      inputValue: '',
+    }),
     methods: {
       subscribe() {
         const valueAfterAt = this.inputValue.split('@')[1];
@@ -47,7 +45,7 @@
         const isValidDomainAfterDot = () => valueAfterAt.split('.')[1].length > 1;
 
         if (valueAfterAt && hasDotAtDomain() && isValidDomainAfterDot()) {
-            return this.clearInput();
+          return this.clearInput();
         }
 
         this.isValid = false;
@@ -57,7 +55,7 @@
       },
       changeValidStatus() {
         this.isValid = true;
-      }
+      },
     },
   };
 </script>
@@ -101,6 +99,7 @@
     align-items: end;
     flex-direction: column;
     margin-top: 1.8rem;
+    width: 452px;
   }
 
   .subscription__input input {
@@ -160,6 +159,15 @@
 
     .footer__subscription {
       margin-top: 3.6rem;
+      width: 100%;
+    }
+
+    .subscription__header {
+      max-width: 17rem;
+    }
+
+    .subscription__input {
+      width: 100%;
     }
   }
 </style>

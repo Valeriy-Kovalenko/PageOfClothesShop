@@ -27,7 +27,7 @@
         </div>
         <div class="content__reviews reviews">
           <p>Отзывы</p>
-          <img src="../assets/fiveStars.svg" class="reviews__stars"/>
+          <img src="../assets/fiveStars.svg" class="reviews__stars" />
           <p>14 отзывов</p>
           <router-link to="/">
             <img src="../assets/arrow.svg" />
@@ -57,14 +57,14 @@
             <span class="actions__counter">{{ amountOfItems }}</span>
             <span @click="removeItem">–</span>
           </div>
-          <div class="actions__buttons buttons"> <!-- добавил див и поплыл БЕМ, надо переписать -->
+          <div class="actions__buttons buttons">
             <button class="buttons__add-to-cart" @click="addItemTo('корзину')">Добавить в корзину</button>
             <button class="buttons__add-to-favourite" @click="addItemTo('избранное')">
               <img src="../assets/whiteHeart.svg" alt="add to favourite!" />
             </button>
           </div>
         </div>
-        <span class="content__buy">Купить в один клик</span>
+        <span class="content__buy">Купить в 1 клик</span>
       </div>
       <div class="information__extra">
         <div v-for="(item, idx) in extraInformation" :key="idx">
@@ -81,48 +81,46 @@
 
   export default {
     components: { TheDialog },
-    data() {
-      return {
-        currentItem: 'Пижама для девочек',
-        amountOfItems: 1,
-        destinationOfItem: '',
-        sizes: ['S', 'M', 'L', 'XL'],
-        extraInformation: [
-          { source: require('../assets/shirt.svg'), label: 'Описание товара' },
-          { source: require('../assets/clock.svg'), label: 'Доставка и возврат' },
-          { source: require('../assets/creditCard.svg'), label: 'Способ оплаты' },
-        ],
-        currentImage: require('../assets/yellowPajamas.svg'),
-        showModal: false,
-        images: [
-          {
-            source: require('../assets/yellowPajamas.svg'),
-            alternate: 'yellow pajamas',
-            picked: true,
-          },
-          {
-            source: require('../assets/pinkPajamasOnGirlFrontView.svg'),
-            alternate: 'pink pajamas on girl front view',
-            picked: false,
-          },
-          {
-            source: require('../assets/pinkPajamasOnGirlBackView.svg'),
-            alternate: 'pink pajamas on girl back view',
-            picked: false,
-          },
-          {
-            source: require('../assets/pinkPajamasFrontView.svg'),
-            alternate: 'pink pajamas front view',
-            picked: false,
-          },
-          {
-            source: require('../assets/pinkPajamasBackView.svg'),
-            alternate: 'pink pajamas back view',
-            picked: false,
-          },
-        ],
-      };
-    },
+    data: () => ({
+      currentItem: 'Пижама для девочек',
+      amountOfItems: 1,
+      destinationOfItem: '',
+      sizes: ['S', 'M', 'L', 'XL'],
+      extraInformation: [
+        { source: require('../assets/shirt.svg'), label: 'Описание товара' },
+        { source: require('../assets/clock.svg'), label: 'Доставка и возврат' },
+        { source: require('../assets/creditCard.svg'), label: 'Способ оплаты' },
+      ],
+      currentImage: require('../assets/yellowPajamas.svg'),
+      showModal: false,
+      images: [
+        {
+          source: require('../assets/yellowPajamas.svg'),
+          alternate: 'yellow pajamas',
+          picked: true,
+        },
+        {
+          source: require('../assets/pinkPajamasOnGirlFrontView.svg'),
+          alternate: 'pink pajamas on girl front view',
+          picked: false,
+        },
+        {
+          source: require('../assets/pinkPajamasOnGirlBackView.svg'),
+          alternate: 'pink pajamas on girl back view',
+          picked: false,
+        },
+        {
+          source: require('../assets/pinkPajamasFrontView.svg'),
+          alternate: 'pink pajamas front view',
+          picked: false,
+        },
+        {
+          source: require('../assets/pinkPajamasBackView.svg'),
+          alternate: 'pink pajamas back view',
+          picked: false,
+        },
+      ],
+    }),
     methods: {
       changeImage(source) {
         this.images.find(img => img.source === this.currentImage).picked = false;
@@ -149,6 +147,7 @@
     padding: 1.5rem 0;
     display: flex;
     width: 100%;
+    margin-top: 2.6rem;
   }
 
   .main__images {
@@ -207,7 +206,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin-top: 0;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 
   .description__article {
@@ -286,17 +285,17 @@
   .size__menu {
     width: 19.7rem;
     height: 2.75rem;
-    padding: .7rem .8rem .7rem 1rem;
+    padding: 0.7rem 0.8rem 0.7rem 1rem;
     background-color: white;
     border: 1px solid #333333;
   }
 
   .size__information,
   .content__buy {
-    font-size: .9rem;
+    font-size: 0.9rem;
     text-decoration: underline;
     color: #333333;
-    margin-top: .8rem;
+    margin-top: 0.8rem;
     cursor: pointer;
   }
 
@@ -309,11 +308,11 @@
     align-items: center;
     width: 9rem;
     height: 2.75rem;
-    padding: .8rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     background-color: #f2f2f2;
     cursor: pointer;
     user-select: none;
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 
   .actions__amount .actions__counter {
@@ -332,8 +331,8 @@
     border: 1px solid #333333;
     background-color: #333333;
     color: white;
-    padding: .8rem 1.7rem;
-    margin: 0 .2rem 0 .8rem;
+    padding: 0.8rem 1.7rem;
+    margin: 0 0.2rem 0 0.8rem;
     font-family: inherit;
     font-size: 0.9rem;
     display: flex;
@@ -347,7 +346,7 @@
     cursor: pointer;
     background-color: white;
     color: #333333;
-    transition: all .5s ease-out;
+    transition: all 0.5s ease-out;
   }
 
   .buttons__add-to-cart:active,
@@ -402,7 +401,6 @@
   }
 
   @media (max-width: 28rem) {
-
     .main {
       flex-direction: column;
       padding: 0;
@@ -410,6 +408,12 @@
 
     .images__main-image {
       height: auto;
+    }
+
+    .list__item img {
+      width: 3.4rem;
+      height: 3.7rem;
+      vertical-align: middle;
     }
 
     .content__actions {
@@ -421,7 +425,7 @@
     }
 
     .buttons__add-to-cart {
-      margin: 0 .2rem 0 0;
+      margin: 0 0.2rem 0 0;
     }
   }
 </style>

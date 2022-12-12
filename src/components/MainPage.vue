@@ -1,6 +1,8 @@
 <template>
   <div class="content">
-    <Header></Header>
+    <Transition name="slide-fade">
+      <Header v-show="showHeader" @toggle-modal-button="handleToggle" :is-modal-visible="isModalVisible"></Header>
+    </Transition>
     <ItemInformation></ItemInformation>
     <ItemAnalogues></ItemAnalogues>
     <Footer></Footer>
@@ -16,28 +18,33 @@
   export default {
     name: 'mainPage',
     components: { Footer, ItemInformation, ItemAnalogues, Header },
-    data() {
-      return {
-        oldScrollY: 0,
-      };
-    },
+    data: () => ({
+      oldScrollY: 0,
+      showHeader: true,
+      isModalVisible: false,
+    }),
     created() {
-      window.addEventListener('scroll', this.changeHeaderPosition);
+      const _ = require('lodash');
+      window.addEventListener(
+        'scroll',
+        _.throttle(() => {
+          console.log(window.scrollY < 30 && !this.isModalVisible);
+          if (window.scrollY < 30 || this.isModalVisible) {
+            return;
+          }
+          const scrollingDown = window.scrollY > this.oldScrollY;
+          this.oldScrollY = window.scrollY;
+          if (scrollingDown) {
+            this.showHeader = false;
+            return;
+          }
+          this.showHeader = true;
+        }, 100)
+      );
     },
     methods: {
-      changeHeaderPosition() {
-        const headerElement = document.querySelector('.content').childNodes[0];
-        const mainInformationElement = document.querySelector('.content').childNodes[1];
-
-        if (this.oldScrollY < window.scrollY) {
-          headerElement.style.position = 'relative';
-          mainInformationElement.style.marginTop = '0';
-        } else {
-          headerElement.style.position = 'fixed';
-          mainInformationElement.style.marginTop = headerElement.offsetHeight + 'px';
-        }
-
-        this.oldScrollY = window.scrollY;
+      handleToggle(value) {
+        this.isModalVisible = value;
       },
     },
   };
@@ -52,9 +59,33 @@
     margin: 0 auto;
   }
 
-  @media (max-width: 26rem) {
+  @media (max-width: 28rem) {
     .content {
-      max-width: 25rem;
+      max-width: 28rem;
     }
+  }
+
+  .slide-fade-enter-from {
+    transform: translateY(-35px);
+  }
+
+  .slide-fade-enter-active {
+    transition: all 0.5s ease;
+  }
+
+  .slide-fade-enter-to {
+    transform: translateY(0);
+  }
+
+  .slide-fade-leave-from {
+    transform: translateY(0);
+  }
+
+  .slide-fade-leave-active {
+    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .slide-fade-leave-to {
+    transform: translateY(-35px);
   }
 </style>
