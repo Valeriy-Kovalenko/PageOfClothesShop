@@ -91,11 +91,11 @@
         { source: require('../assets/clock.svg'), label: 'Доставка и возврат' },
         { source: require('../assets/creditCard.svg'), label: 'Способ оплаты' },
       ],
-      currentImage: require('../assets/yellowPajamas.svg'),
+      currentImage: "https://i.ibb.co/bXTW0t5/yellow-Pajamas.png",
       showModal: false,
       images: [
         {
-          source: require('../assets/yellowPajamas.svg'),
+          source: "https://i.ibb.co/bXTW0t5/yellow-Pajamas.png",
           alternate: 'yellow pajamas',
           picked: true,
         },
@@ -158,6 +158,7 @@
 
   .images__main-image {
     height: 878px;
+    width: 675px;
   }
 
   .images__list {
